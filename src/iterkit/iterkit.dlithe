@@ -1,0 +1,17 @@
+~~ Stub file for the iterkit module ~~
+
+NAMESPACE typekit.
+Append typekit.
+
+TYPEVAR T.
+TYPEVAR T_co.
+  AUTO $properties.
+    $ :: {covariant :: TRUE}.
+
+TYPE ITER[T].
+
+PROTOCOL ITERABLE[T_co].
+  FUNCTION[[$] ITER[T_co]] Iter.
+
+FUNCTION[[ITERABLE[T_co]] ITER[T_co]] Iter.
+FUNCTION[[AUTO] TYPEGUARD[ITERABLE[AUTO]]] IsIterable.

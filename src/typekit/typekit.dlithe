@@ -1,0 +1,16 @@
+~~ Stub file for the typekit module. ~~
+
+TYPEVAR _T.
+
+TYPEVAR _T_co.
+  AUTO $properties.
+    $ :: {covariant :: TRUE}.
+
+TYPEVAR _T_contra.
+  AUTO $properties.
+    $ :: {contravariant :: TRUE}.
+
+
+TYPE TYPEGUARD[_T].
+
+private _T _T_co _T_contra.

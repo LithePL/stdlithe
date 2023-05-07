@@ -1,0 +1,94 @@
+~~ Stub file for the io module ~~
+
+NAMESPACE iterkit.
+Append iterkit.
+
+
+TYPE TEXT_OR_BYTES.
+  $ :: Union TEXT BYTES.
+
+TYPEVAR _TEXT_OR_BYTES_T.
+  AUTO $bound.
+    $ :: TEXT_OR_BYTES.
+
+TYPEVAR _TEXT_OR_BYTES_T_co.
+  AUTO $properties $bound.
+
+  $properties :: {covariant :: TRUE}.
+  $bound :: TEXT_OR_BYTES.
+
+
+TYPE BUFFER.
+
+TYPE WHENCE.
+  ~~:
+  The base implementation of WHENCE goes as follows:
+
+  ```lithe
+  TYPE WHENCE.
+    AUTO $defset.
+
+    $defset :: {0 1 2}.
+  ```
+
+  Some platforms might support more values for the whence, in which case
+  the defset of WHENCE is larger. That said, only the base definition defset
+  is considered platform-agnostic.
+  :~~
+
+
+~~ Abstract type: is meaningless at runtime ~~
+PROTOCOL IO_BASE[_TEXT_OR_BYTES_T_co].
+  BOOL $closed.
+
+  FUNCTION[[$] UINT] Descriptor.
+  
+  FUNCTION[[$] BOOL] IsATTY.
+  FUNCTION[[$] BOOL] Readable.
+  FUNCTION[[$] BOOL] Writable.
+  FUNCTION[[$] BOOL] Seekable.
+
+  FUNCTION[[$] _TEXT_OR_BYTES_T_co] Read.
+  FUNCTION[[$ UINT*Optional] _TEXT_OR_BYTES_T_co] ReadLn.
+  FUNCTION[[$ UINT*Optional] ITER[_TEXT_OR_BYTES_T_co]] ReadLns. 
+  FUNCTION[[$ _TEXT_OR_BYTES_T_co] UINT] Write.
+  FUNCTION[[$ ITER[_TEXT_OR_BYTES_T_co]] UINT] WriteLns.
+  FUNCTION[[$ UINT WHENCE*Optional] UINT] Seek.
+  FUNCTION[[$ UINT*Optional] UINT] Truncate.
+  FUNCTION[[$] NULL] Flush.
+  FUNCTION[[$] NULL] Close.
+  FUNCTION[[$] UINT] Tell.
+
+
+IO_BASE IO[_TEXT_OR_BYTES_T_co].
+  BUFFER $buffer.
+  TEXT $encoding $errors.
+
+  FUNCTION[[$] BUFFER] Detach.
+
+
+IO[TEXT] TextIO.
+IO[BYTES] BytesIO.
+
+
+PROTOCOL SUPPORTS_WRITE[_TEXT_OR_BYTES_T].
+  FUNCTION[[$ _TEXT_OR_BYTES_T] UINT] Write.
+
+
+FUNCTION[[IO[_TEXT_OR_BYTES_T_co]] _TEXT_OR_BYTES_T_co] Read.
+FUNCTION[[IO[_TEXT_OR_BYTES_T_co] UINT*Optional] _TEXT_OR_BYTES_T_co] ReadLn.
+FUNCTION[[IO[_TEXT_OR_BYTES_T_co] UINT*Optional] ITER[_TEXT_OR_BYTES_T_co]] ReadLns. 
+FUNCTION[[IO[_TEXT_OR_BYTES_T_co] _TEXT_OR_BYTES_T_co] UINT] Write.
+FUNCTION[[IO[_TEXT_OR_BYTES_T_co] ITER[_TEXT_OR_BYTES_T_co]] UINT] WriteLns.
+FUNCTION[[IO[TEXT_OR_BYTES] UINT WHENCE*Optional] UINT] Seek.
+FUNCTION[[IO[TEXT_OR_BYTES] UINT*Optional] UINT] Truncate.
+FUNCTION[[IO[TEXT_OR_BYTES]] NULL] Flush.
+FUNCTION[[IO[TEXT_OR_BYTES]] NULL] Close.
+FUNCTION[[IO[TEXT_OR_BYTES]] UINT] Tell.
+
+FUNCTION[[...AUTO, TEXT*Optional TEXT*Optional SUPPORTS_WRITE*Optional] NULL] Print.
+FUNCTION[[TEXT ...AUTO, SUPPORTS_WRITE*Optional] NULL] PrintLn.
+FUNCTION[[...AUTO, TEXT*Optional TEXT*Optional] NULL] ErrPrint.
+FUNCTION[[TEXT ...AUTO] NULL] ErrPrintLn.
+
+private _TEXT_OR_BYTES_T _TEXT_OR_BYTES_T_co.
